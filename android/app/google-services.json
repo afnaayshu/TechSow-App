@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "76984243530",
+    "project_id": "techsow-5d67d",
+    "storage_bucket": "techsow-5d67d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:76984243530:android:08b625adeb180940119db3",
+        "android_client_info": {
+          "package_name": "com.example.techsow"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "76984243530-qakj17gq0odcie3jsodg6npp71hrjtfq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqQqhv_TUGM79CvQyHQmp-vvekm61l1MY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "76984243530-qakj17gq0odcie3jsodg6npp71hrjtfq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
