@@ -4,6 +4,7 @@ import 'package:icons_plus/icons_plus.dart';
 import 'package:techsow/screens/forget_passsword_screen.dart';
 import 'package:techsow/screens/home.dart';
 import 'package:techsow/screens/signup_screen.dart';
+import 'package:techsow/service/auth.dart';
 
 import '../theme/theme.dart';
 import '../widgets/custom_scaffold.dart';
@@ -285,7 +286,12 @@ class _SignInScreenState extends State<SignInScreen> {
                         children: [
                           Logo(Logos.facebook_f),
                           Logo(Logos.twitter),
-                          Logo(Logos.google),
+                          GestureDetector(
+                            onTap: (){
+                              AuthMethods().signInWithGoogle(context);
+                            },
+                            child: Logo(Logos.google)
+                          ),
                           Logo(Logos.apple),
                         ],
                       ),
