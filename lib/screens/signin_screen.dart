@@ -1,6 +1,8 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:icons_plus/icons_plus.dart';
+import 'package:techsow/screens/forget_passsword_screen.dart';
+import 'package:techsow/screens/home.dart';
 import 'package:techsow/screens/signup_screen.dart';
 
 import '../theme/theme.dart';
@@ -17,8 +19,36 @@ class _SignInScreenState extends State<SignInScreen> {
   final _formSignInKey = GlobalKey<FormState>();
   bool rememberPassword = true;
 
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
+  String email = "", password = "";
+
+  final TextEditingController mailcontroller = TextEditingController();
+  final TextEditingController passwordcontroller = TextEditingController();
+
+  userLogin() async {
+    try {
+      await FirebaseAuth.instance
+          .signInWithEmailAndPassword(email: email, password: password);
+          Navigator.popUntil(context, ModalRoute.withName('/'));
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomePage()));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "No User Found for that Email",
+              style: TextStyle(fontSize: 18.0),
+            )));
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+            backgroundColor: Colors.orangeAccent,
+            content: Text(
+              "Wrong Password Provided by User",
+              style: TextStyle(fontSize: 18.0),
+            )));
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -60,6 +90,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 40.0,
                       ),
                       TextFormField(
+                        controller: mailcontroller,
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter Email';
@@ -90,6 +121,7 @@ class _SignInScreenState extends State<SignInScreen> {
                         height: 25.0,
                       ),
                       TextFormField(
+                        controller: passwordcontroller,
                         obscureText: true,
                         obscuringCharacter: '*',
                         validator: (value) {
@@ -144,6 +176,13 @@ class _SignInScreenState extends State<SignInScreen> {
                             ],
                           ),
                           GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const ForgotPassword()));
+                            },
                             child: Text(
                               'Forget password?',
                               style: TextStyle(
@@ -163,30 +202,37 @@ class _SignInScreenState extends State<SignInScreen> {
                           onPressed: () async {
                             if (_formSignInKey.currentState!.validate() &&
                                 rememberPassword) {
+                              setState(() {
+                                email = mailcontroller.text;
+                                password = passwordcontroller.text;
+                              });
                               // ScaffoldMessenger.of(context).showSnackBar(
                               //   const SnackBar(
                               //     content: Text('Processing Data'),
                               //   ),
                               // );
 
-                              try {
-                                await FirebaseAuth.instance.signInWithEmailAndPassword(
-                                  email: emailController.text,
-                                  password: passwordController.text,
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Sign in successful'),
-                                  ),
-                                );
-                                Navigator.pushReplacementNamed(context, '/home');
-                              } catch (e) {
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Please agree to the processing of personal data'),
-                                  ),
-                                );
-                              }
+                              // try {
+                              //   await FirebaseAuth.instance
+                              //       .signInWithEmailAndPassword(
+                              //     email: mailController.text,
+                              //     password: passwordController.text,
+                              //   );
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(
+                              //       content: Text('Sign in successful'),
+                              //     ),
+                              //   );
+                              //   Navigator.pushReplacementNamed(
+                              //       context, '/home');
+                              // } catch (e) {
+                              //   ScaffoldMessenger.of(context).showSnackBar(
+                              //     const SnackBar(
+                              //       content: Text(
+                              //           'Please agree to the processing of personal data'),
+                              //     ),
+                              //   );
+                              // }
                             } else if (!rememberPassword) {
                               ScaffoldMessenger.of(context).showSnackBar(
                                 const SnackBar(
@@ -194,8 +240,9 @@ class _SignInScreenState extends State<SignInScreen> {
                                         'Please agree to the processing of personal data')),
                               );
                             }
+                            userLogin();
                           },
-                          child: const Text('Sign up'),
+                          child: const Text('Sign in'),
                         ),
                       ),
                       const SizedBox(
