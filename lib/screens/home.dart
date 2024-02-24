@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:techsow/controllers/rover_controller.dart';
 import 'package:techsow/screens/choose_crop.dart';
+import 'package:techsow/screens/fertilizer_calculator.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -170,6 +171,12 @@ class _HomePageState extends State<HomePage> {
                   GestureDetector(
                     onTap: () {
                       print("clicked");
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => FertilizerCalculatorPage(),
+                        ),
+                      );
                     },
                     child: Column(
                       children: [
@@ -247,6 +254,12 @@ class _HomePageState extends State<HomePage> {
             if (index == 2) {
               // Navigate to the IoT app development page
               Navigator.pushNamed(context, '/rover');
+            }
+            if (index == 3) {
+              Navigator.pushNamed(
+                context,
+                '/profile',
+              );
             }
           });
         },

@@ -73,16 +73,18 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/images/ 
-    - assets/model/model_unquant.tflite                     #tomato model from teachable
-    - assets/model/labels.txt
     - assets/model/potato_model_yolo.tflite                #converted potato model from yolo to tflite
-    - assets/model/potato_labels.txt
-    - assets/model/yolov2_tiny.tflite                     #sample yolo v2 tiny model from tensorflow - in-built model
-    - assets/model/yolov2_tiny.txt
+
     - assets/model/potato_labels_cnn.txt                  #converted potato cnn model from trained cnn model from drive
     - assets/model/converted_model_cnn.tflite
+
     - assets/model/potato_model.tflite                   #converted potato cnn model from trained cnn model/trained cnn potato
     - assets/model/potato_labels.txt
+    - assets/model/potato_model_teachable.tflite         #potato model from teachable
+    - assets/model/potato_labels_teachable.txt
+    
+    - assets/model/model_unquant.tflite         #potato model from teachable
+    - assets/model/labels.txt
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

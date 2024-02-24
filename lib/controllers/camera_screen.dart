@@ -7,8 +7,8 @@ import 'package:image_picker/image_picker.dart';
 class CameraScreen extends StatefulWidget {
   final String cropName;
   final List<CameraDescription> cameras;
-  const CameraScreen({Key? key, required this.cameras, required this.cropName}) : super(key: key);
-
+  const CameraScreen({Key? key, required this.cameras, required this.cropName})
+      : super(key: key);
 
   @override
   State<CameraScreen> createState() => _CameraScreenState();
@@ -92,7 +92,7 @@ class _CameraScreenState extends State<CameraScreen> {
 
   Future<void> _runPotatoModel(File imageFile) async {
     await Tflite.loadModel(
-      model: "assets/model/potato_model.tflite",
+      model: "assets/model/potato_model_teachable.tflite",
       labels: "assets/model/potato_labels.txt",
       isAsset: true,
       numThreads: 1,
@@ -136,7 +136,8 @@ class _CameraScreenState extends State<CameraScreen> {
             children: [
               Text(
                 'Disease: $result',
-                style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                style:
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 20),
               const Text(
@@ -192,74 +193,73 @@ class _CameraScreenState extends State<CameraScreen> {
     }
   }
 
-
   void _showPotatoResultScreen(String result) {
-  List<String> symptoms = _getSymptomsForPotatoDisease(result);
+    List<String> symptoms = _getSymptomsForPotatoDisease(result);
+    print(result);
 
-  showModalBottomSheet(
-    context: context,
-    builder: (BuildContext context) {
-      return Container(
-        width: 400,
-        height: 400,
-        padding: const EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Result 2: $result',
-              style: const TextStyle(fontSize: 20),
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Symptoms:',
-              style: TextStyle(fontSize: 16),
-            ),
-            const SizedBox(height: 10),
-            Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: symptoms.map((symptom) {
-                return Text(
-                  '- $symptom',
-                  style: const TextStyle(fontSize: 14),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                // Handle Learn More button action
-              },
-              child: const Text('Learn More'),
-            ),
-          ],
-        ),
-      );
-    },
-  );
-}
-
-List<String> _getSymptomsForPotatoDisease(String disease) {
-  switch (disease) {
-    case 'Potato___Early_blight':
-      return [
-        'Small, brown spots on leaves',
-        'Yellowing of leaves',
-        'Dark lesions on stems'
-      ];
-    case 'Potato___Late_blight':
-      return [
-        'Dark, water-soaked spots on leaves',
-        'White mold on underside of leaves',
-        'Rapid leaf yellowing and wilting'
-      ];
-    case 'Potato___healthy':
-      return ['No visible symptoms'];
-    default:
-      return [];
+    showModalBottomSheet(
+      context: context,
+      builder: (BuildContext context) {
+        return Container(
+          width: 400,
+          height: 400,
+          padding: const EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Result 2: $result',
+                style: const TextStyle(fontSize: 20),
+              ),
+              const SizedBox(height: 20),
+              const Text(
+                'Symptoms:',
+                style: TextStyle(fontSize: 16),
+              ),
+              const SizedBox(height: 10),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: symptoms.map((symptom) {
+                  return Text(
+                    '- $symptom',
+                    style: const TextStyle(fontSize: 14),
+                  );
+                }).toList(),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  // Handle Learn More button action
+                },
+                child: const Text('Learn More'),
+              ),
+            ],
+          ),
+        );
+      },
+    );
   }
-}
 
+  List<String> _getSymptomsForPotatoDisease(String disease) {
+    switch (disease) {
+      case 'Potato___Early_blight':
+        return [
+          'Small, brown spots on leaves',
+          'Yellowing of leaves',
+          'Dark lesions on stems'
+        ];
+      case 'Potato___Late_blight':
+        return [
+          'Dark, water-soaked spots on leaves',
+          'White mold on underside of leaves',
+          'Rapid leaf yellowing and wilting'
+        ];
+      case 'Potato___healthy':
+        return ['No visible symptoms'];
+      default:
+        return [];
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
