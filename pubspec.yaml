@@ -50,8 +50,6 @@ dev_dependencies:
   firebase_auth: ^4.17.4
   cloud_firestore: ^4.15.4
   google_sign_in: ^6.2.1
-  geolocator: ^10.1.0
-  weather: ^3.1.1
   
 
   # The "flutter_lints" package below contains a set of recommended lints to
@@ -74,9 +72,17 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/images/
-    - assets/model/model_unquant.tflite
+    - assets/images/ 
+    - assets/model/model_unquant.tflite                     #tomato model from teachable
     - assets/model/labels.txt
+    - assets/model/potato_model_yolo.tflite                #converted potato model from yolo to tflite
+    - assets/model/potato_labels.txt
+    - assets/model/yolov2_tiny.tflite                     #sample yolo v2 tiny model from tensorflow - in-built model
+    - assets/model/yolov2_tiny.txt
+    - assets/model/potato_labels_cnn.txt                  #converted potato cnn model from trained cnn model from drive
+    - assets/model/converted_model_cnn.tflite
+    - assets/model/potato_model.tflite                   #converted potato cnn model from trained cnn model/trained cnn potato
+    - assets/model/potato_labels.txt
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

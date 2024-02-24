@@ -1,12 +1,8 @@
-import 'dart:convert';
 import 'package:camera/camera.dart';
-import 'package:techsow/constants.dart';
-import 'package:techsow/controllers/camera_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:http/http.dart' as http;
-import 'package:geolocator/geolocator.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'package:techsow/controllers/rover_controller.dart';
+import 'package:techsow/screens/choose_crop.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -19,9 +15,7 @@ class _HomePageState extends State<HomePage> {
   //WeatherFactory wf = new WeatherFactory("WEATHER_API_KEY");
 
   int index = 0;
-  // Weather data
-  String? temperature;
-  String? humidity;
+
   late List<CameraDescription> cameras;
 
   @override
@@ -34,67 +28,15 @@ class _HomePageState extends State<HomePage> {
     cameras = await availableCameras();
   }
 
-  void navigateToCameraScreen() {
+  void navigateToChooseCropScreen() {
     Navigator.push(
       context,
       MaterialPageRoute(
         builder: (context) {
-          return CameraScreen(cameras: cameras); // Pass cameras to CameraScreen
+          return ChooseCrop(cameras: cameras); // Pass cameras to CameraScreen
         },
       ),
     );
-  }
-
-  Future<void> fetchWeatherData() async {
-    if (await Permission.location.request().isGranted) {
-      try {
-        Position position = await Geolocator.getCurrentPosition(
-            desiredAccuracy: LocationAccuracy.high);
-        await fetchWeatherDataFromCoordinates(
-            position.latitude, position.longitude);
-      } catch (e) {
-        setState(() {
-          // Update state to indicate error
-          temperature = "Error fetching location";
-          humidity = null;
-        });
-        print('Failed to fetch location: $e');
-      }
-    } else {
-      print('Location permissions are not granted.');
-    }
-  }
-
-  Future<void> fetchWeatherDataFromCoordinates(double lat, double lon) async {
-    final url =
-        'https://api.openweathermap.org/data/2.5/weather?lat=$lat&lon=$lon&appid=$WEATHER_API_KEY';
-
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        final Map<String, dynamic> data = json.decode(response.body);
-        setState(() {
-          temperature = (data['main']['temp'] - 273.15)
-              .toStringAsFixed(1); // Convert Kelvin to Celsius
-          humidity = data['main']['humidity'].toString();
-          // Extract more weather properties as needed
-        });
-      } else {
-        setState(() {
-          // Update state to indicate error
-          temperature = "Error fetching weather data: ${response.statusCode}";
-          humidity = null;
-        });
-        print('Failed to fetch weather data: ${response.statusCode}');
-      }
-    } catch (e) {
-      setState(() {
-        // Update state to indicate error
-        temperature = "Error fetching weather data";
-        humidity = null;
-      });
-      print('Error during HTTP request: $e');
-    }
   }
 
   @override
@@ -104,7 +46,8 @@ class _HomePageState extends State<HomePage> {
       appBar: AppBar(
         title: const Text('Techsow'),
         iconTheme: const IconThemeData(color: Colors.black),
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
+        backgroundColor: Color.fromARGB(255, 165, 182, 143),
         elevation: 3,
         actions: [
           IconButton(
@@ -270,6 +213,8 @@ class _HomePageState extends State<HomePage> {
 
       // Bottom Navbar
       bottomNavigationBar: BottomNavigationBar(
+        //backgroundColor: _getBackgroundColor(11),
+        backgroundColor: Color.fromARGB(255, 165, 182, 143),
         items: [
           const BottomNavigationBarItem(
             icon: Icon(Icons.home),
@@ -297,7 +242,11 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             index = value;
             if (index == 1) {
-              navigateToCameraScreen();
+              navigateToChooseCropScreen();
+            }
+            if (index == 2) {
+              // Navigate to the IoT app development page
+              Navigator.pushNamed(context, '/rover');
             }
           });
         },
@@ -312,7 +261,7 @@ class _HomePageState extends State<HomePage> {
     } else if (temperature >= 20.0) {
       return Colors.yellowAccent;
     } else if (temperature >= 10.0) {
-      return Colors.lightGreenAccent;
+      return Color.fromARGB(255, 165, 182, 143);
     } else {
       return Colors.blueAccent;
     }

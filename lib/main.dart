@@ -2,6 +2,7 @@ import 'package:camera/camera.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:techsow/controllers/rover_controller.dart';
 import 'package:techsow/screens/home.dart';
 import 'package:techsow/screens/welcome_screen.dart';
 import 'package:techsow/theme/theme.dart';
@@ -37,6 +38,9 @@ class MyApp extends StatelessWidget {
         }
         }
       ),
+      routes: {
+        '/rover': (context) => RoverControlPage(), // Define the IoT app development page route
+      },
     );
   }
 }
